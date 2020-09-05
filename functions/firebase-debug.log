@@ -1,0 +1,61 @@
+[debug] [2020-09-05T23:06:23.582Z] ----------------------------------------------------------------------
+[debug] [2020-09-05T23:06:23.583Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Иван Гаев\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions
+[debug] [2020-09-05T23:06:23.584Z] CLI Version:   8.9.0
+[debug] [2020-09-05T23:06:23.584Z] Platform:      win32
+[debug] [2020-09-05T23:06:23.584Z] Node Version:  v12.18.3
+[debug] [2020-09-05T23:06:23.585Z] Time:          Sun Sep 06 2020 02:06:23 GMT+0300 (GMT+03:00)
+[debug] [2020-09-05T23:06:23.585Z] ----------------------------------------------------------------------
+[debug] [2020-09-05T23:06:23.585Z] 
+[debug] [2020-09-05T23:06:23.593Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-09-05T23:06:23.594Z] > authorizing via signed-in user
+[debug] [2020-09-05T23:06:23.594Z] [iam] checking project jsondb-d8a6a for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2020-09-05T23:06:23.597Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2020-09-05T23:06:23.597Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2020-09-05T23:06:23.760Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sat, 05 Sep 2020 23:06:25 GMT","server":"scaffolding on HTTPServer2","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-09-05T23:06:23.765Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/jsondb-d8a6a:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2020-09-05T23:06:24.070Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sat, 05 Sep 2020 23:06:25 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=157","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-09-05T23:06:24.071Z] >>> HTTP REQUEST POST https://iam.googleapis.com/v1/projects/jsondb-d8a6a/serviceAccounts/jsondb-d8a6a@appspot.gserviceaccount.com:testIamPermissions  
+ {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2020-09-05T23:06:25.087Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sat, 05 Sep 2020 23:06:26 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] === Deploying to 'jsondb-d8a6a'...
+[info] 
+[info] i  deploying functions 
+[debug] [2020-09-05T23:06:28.526Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "10"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@frangiskos/mssql": "^0.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "firebase-admin": "^8.10.0",
+    "firebase-functions": "^3.6.1",
+    "mongodb": "^3.6.1",
+    "uuid": "^8.3.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[debug] [2020-09-05T23:06:30.101Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/jsondb-d8a6a/services/cloudfunctions.googleapis.com  
+ 
+[debug] [2020-09-05T23:06:30.101Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/jsondb-d8a6a/services/runtimeconfig.googleapis.com  
+ 
+[debug] [2020-09-05T23:06:30.101Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/jsondb-d8a6a/services/cloudbuild.googleapis.com  
+ 
