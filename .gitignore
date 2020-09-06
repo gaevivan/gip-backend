@@ -1,3 +1,6 @@
 node_modules/
 functions/node_modules
 functions/ui-debug.log
+ui-debug.log
+functions/firebase-debug.log
+firebase-debug.log
