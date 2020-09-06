@@ -5,6 +5,7 @@ const { user } = require("firebase-functions/lib/providers/auth");
 
 module.exports = {
     createTokens,
+    decodeToken,
     jwtMiddleware,
     updateTokens,
     clearRefreshTokens
@@ -87,10 +88,15 @@ function jwtMiddleware(request, response, next) {
     });
 }
 
+/** Расшифровка токена. */
+function decodeToken(token) {
+    return jsonwebtoken.verify(token, jwtSecret);
+}
+
 /** Обновление refresh-token. */
 async function updateTokens(token, database) {
     // Получаем идентификатор пользователя из токена.
-    const decodedToken = jsonwebtoken.verify(token, jwtSecret);
+    const decodedToken = decodeToken(token);
     const userId = decodedToken.userId;
     // Ищем пользователя с таким идентификатором.
     const user = await storage.select(entities.user, ["id", "=", userId], database);

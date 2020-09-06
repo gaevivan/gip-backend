@@ -44,27 +44,19 @@ async function isSigned(request, response, database) {
 /** Выход. */
 async function signOut(request, response, database) {
     try {
-        // Проверка наличия логина.
-        const login = request.body.login;
-        if (!login) {
-            return response.status(400).send("Необходимо поле: login");
+        // Проверка наличия токена.
+        const token = request.headers.jwt;
+        if (!token) {
+            response.status(401).send('invalid token');
         }
-        // Проверка наличия пароля.
-        const password = request.body.password;
-        if (!password) {
-            return response.status(400).send("Необходимо поле: password");
-        }
+        // Вытаскиваем из токена id пользователя.
+        const decodedData = jwt.decodeToken(token);
         // Проверка наличия пользователя по логину.
-        const filterItem = ["login", "=", login];
-        const users = await storage.select(entities.user, filterItem, database);
+        const users = await storage.select(entities.user, ["id", "=", decodedData.userId], database);
         if (!users.length) {
             return response.status(401).send("Нет такого пользователя.");
         }
         const user = users[0];
-        // Проверка правильности пароля.
-        if (user.password !== password) {
-            return response.status(401).send("Неправильный пароль.");
-        }
         await jwt.clearRefreshTokens(user.id, database);
         return response.status(200).send();
     } catch (error) {
