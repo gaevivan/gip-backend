@@ -15,8 +15,11 @@ const db = admin.firestore();
 
 app.use(cors({ origin: true }));
 
-app.post('/auth', (req, res) => api.auth(req, res, db));
 app.post('/refresh-token', (req, res) => api.updateRefreshToken(req, res, db));
+app.post('/is-signed', (req, res) => api.isSigned(req, res, db));
+app.post('/sign-in', (req, res) => api.signIn(req, res, db));
+app.post('/sign-up', (req, res) => api.signUp(req, res, db));
+app.post('/sign-out', jwt.jwtMiddleware, (req, res) => api.signOut(req, res, db));
 app.post('/select', jwt.jwtMiddleware, (req, res) => api.select(req, res, db));
 app.post('/update', jwt.jwtMiddleware, (req, res) => api.update(req, res, db));
 app.post('/remove', jwt.jwtMiddleware, (req, res) => api.remove(req, res, db));

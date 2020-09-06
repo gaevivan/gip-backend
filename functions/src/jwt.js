@@ -1,15 +1,17 @@
 const jsonwebtoken = require("jsonwebtoken");
 const entities = require("./entity");
 const storage = require("./storage");
+const { user } = require("firebase-functions/lib/providers/auth");
 
 module.exports = {
     createTokens,
     jwtMiddleware,
-    updateTokens
+    updateTokens,
+    clearRefreshTokens
 };
 
 const jwtSecret = "13.05.1993";
-const accessTokenExpire = "1min";
+const accessTokenExpire = "10min";
 const refreshTokenExpire = "30d";
 
 /** Генерация access-token. */
@@ -51,11 +53,9 @@ async function clearRefreshTokens(userId, database) {
         ["userId", "=", userId],
         database
     );
-    if (userRefreshTokens.length >= 5) {
-        userRefreshTokens.forEach(async (token) => {
-            await storage.remove(entities.token, token.id, database);
-        });
-    }
+    userRefreshTokens.forEach(async (token) => {
+        await storage.remove(entities.token, token.id, database);
+    });
 }
 
 /** Проверка токена. */
@@ -121,6 +121,7 @@ async function updateTokens(token, database) {
     // Замена текущего токена новым.
     await storage.update(entities.token, currentTokenItem.id, newTokenItem, database);
     return {
+        login: user.login,
         accessToken: accessToken,
         refreshToken: refreshToken
     };

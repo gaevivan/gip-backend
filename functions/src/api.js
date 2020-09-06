@@ -3,7 +3,10 @@ const storage = require("./storage");
 const jwt = require("./jwt");
 
 module.exports = {
-    auth,
+    isSigned,
+    signIn,
+    signOut,
+    signUp,
     update,
     remove,
     create,
@@ -11,8 +14,99 @@ module.exports = {
     updateRefreshToken
 }
 
+/** Выход. */
+async function isSigned(request, response, database) {
+    try {
+        // Проверка наличия логина.
+        const login = request.body.login;
+        if (!login) {
+            return response.status(400).send("Необходимо поле: login");
+        }
+        // Проверка наличия пользователя по логину.
+        const filterItem = ["login", "=", login];
+        const users = await storage.select(entities.user, filterItem, database);
+        if (!users.length) {
+            return response.status(401).send("Нет такого пользователя.");
+        }
+        const user = users[0];
+        // Проверка наличия токенов.
+        const tokens = await storage.select(entities.token, ["userId", "=", user.id], database);
+        if (!tokens || !tokens.length) {
+            return response.status(401).send();
+        }
+        return response.status(200).send();
+    } catch (error) {
+        console.log(error);
+        return response.status(500).send(error);
+    }
+}
+
+/** Выход. */
+async function signOut(request, response, database) {
+    try {
+        // Проверка наличия логина.
+        const login = request.body.login;
+        if (!login) {
+            return response.status(400).send("Необходимо поле: login");
+        }
+        // Проверка наличия пароля.
+        const password = request.body.password;
+        if (!password) {
+            return response.status(400).send("Необходимо поле: password");
+        }
+        // Проверка наличия пользователя по логину.
+        const filterItem = ["login", "=", login];
+        const users = await storage.select(entities.user, filterItem, database);
+        if (!users.length) {
+            return response.status(401).send("Нет такого пользователя.");
+        }
+        const user = users[0];
+        // Проверка правильности пароля.
+        if (user.password !== password) {
+            return response.status(401).send("Неправильный пароль.");
+        }
+        await jwt.clearRefreshTokens(user.id, database);
+        return response.status(200).send();
+    } catch (error) {
+        console.log(error);
+        return response.status(500).send(error);
+    }
+}
+
+/** Регистрация. */
+async function signUp(request, response, database) {
+    try {
+        // Проверка наличия логина.
+        const login = request.body.login;
+        if (!login) {
+            return response.status(400).send("Необходимо поле: login");
+        }
+        // Проверка наличия пароля.
+        const password = request.body.password;
+        if (!password) {
+            return response.status(400).send("Необходимо поле: password");
+        }
+        // Проверка наличия пользователя по логину.
+        const filterItem = ["login", "=", login];
+        const users = await storage.select(entities.user, filterItem, database);
+        if (users.length) {
+            return response.status(401).send("Такой пользователь уже есть.");
+        }
+        await storage.create(entities.user, {login, password}, database);
+        const user = (await storage.select(entities.user, ["login", "=", login], database))[0];
+        // Получение токенов.
+        const tokens = await jwt.createTokens(user.id, database);
+        // Подготовка ответа.
+        const result = {...tokens, login: user.login};
+        return response.status(200).send(result);
+    } catch (error) {
+        console.log(error);
+        return response.status(500).send(error);
+    }
+}
+
 /** Авторизация. */
-async function auth(request, response, database) {
+async function signIn(request, response, database) {
     try {
         // Проверка наличия логина.
         const login = request.body.login;
@@ -38,9 +132,7 @@ async function auth(request, response, database) {
         // Получение токенов.
         const tokens = await jwt.createTokens(user.id, database);
         // Подготовка ответа.
-        delete user.password;
-        delete user.id;
-        const result = {...tokens, user};
+        const result = {...tokens, login: user.login};
         return response.status(200).send(result);
     } catch (error) {
         console.log(error);
@@ -60,7 +152,7 @@ async function create(request, response, database) {
             return response.status(400).send("Необходимо поле: data");
         }
         const result = await storage.create(entity, data, database);
-        return response.status(200).send(result);
+        return response.status(201).send(result);
     } catch (error) {
         console.log(error);
         return response.status(500).send(error);
