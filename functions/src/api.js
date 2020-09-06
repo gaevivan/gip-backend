@@ -18,13 +18,13 @@ module.exports = {
 async function isSigned(request, response, database) {
     try {
         // Проверка наличия логина.
-        const login = request.body.login;
-        if (!login) {
-            return response.status(400).send("Необходимо поле: login");
+        const token = request.body.jwt;
+        if (!token) {
+            response.status(401).send('invalid token');
         }
-        // Проверка наличия пользователя по логину.
-        const filterItem = ["login", "=", login];
-        const users = await storage.select(entities.user, filterItem, database);
+        // Вытаскиваем из токена id пользователя.
+        const decodedData = jwt.decodeToken(token);
+        const users = await storage.select(entities.user, ["id", "=", decodedData.userId], database);
         if (!users.length) {
             return response.status(401).send("Нет такого пользователя.");
         }
