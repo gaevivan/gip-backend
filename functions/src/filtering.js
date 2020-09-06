@@ -1,4 +1,9 @@
-exports.compare = function(data, filter) {
+module.exports = {
+    compare,
+    filter
+}
+
+function compare(data, filter) {
     const [key, operation, value] = filter; 
     if (operation === "=") {
         return data[key] === value;
@@ -8,15 +13,15 @@ exports.compare = function(data, filter) {
     return true;
 }
 
-exports.filterItem = function(data, filter) {
-    if (!filter) {
+function filter(dataItem, filterItem) {
+    if (!filterItem) {
         return true;
     }
-    if (filter.length > 2 && filter[1] === "and") {
-        return filterItem(data, filter[0]) && filterItem(data, filter[2]);
-    } else if (filter.length > 2 && filter[1] === "or") {
-        return filterItem(data, filter[0]) || filterItem(data, filter[2])
+    if (filterItem.length > 2 && filterItem[1] === "and") {
+        return filter(dataItem, filterItem[0]) && filter(dataItem, filterItem[2]);
+    } else if (filterItem.length > 2 && filterItem[1] === "or") {
+        return filter(dataItem, filterItem[0]) || filter(dataItem, filterItem[2])
     } else {
-        return compare(data, filter);
+        return this.compare(dataItem, filterItem);
     }
 }

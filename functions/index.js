@@ -14,6 +14,7 @@ const db = admin.firestore();
 
 app.use(cors({ origin: true }));
 
+app.post('/auth', (req, res) => api.auth(req, res, db));
 app.post('/select', (req, res) => api.select(req, res, db));
 app.post('/update', (req, res) => api.update(req, res, db));
 app.post('/remove', (req, res) => api.remove(req, res, db));
