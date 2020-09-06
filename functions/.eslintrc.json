@@ -1,0 +1,32 @@
+{
+    "env": {
+        "browser": true,
+        "es2020": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 11,
+        "sourceType": "module"
+    },
+    "rules": {
+        "no-multi-spaces": "error",
+        "no-multi-str": "error",
+        "no-spaced-func": "error",
+        "no-trailing-spaces": [
+            "error",
+            {
+                "ignoreComments": true
+            }
+        ],
+        "no-unused-vars": [
+            "error"
+        ],
+        "indent": [
+            "error",
+            4
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    }
+}
